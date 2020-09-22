@@ -20,6 +20,11 @@ class MyLocationActivity : AppCompatActivity() {
             location ->
             //Update UI
         }
+        Util.checkUserStatus(....){ result ->
+            if(result){
+                myLocationListener.enable()
+            }
+        }
 
     }
 
@@ -54,6 +59,15 @@ class MyLocationActivity : AppCompatActivity() {
     }
 }
 
+/*
+for this location tracking ex. we can make MyLocationListener class
+implement LifecycleObserver and then initialize it with activity's
+Lifecycle in the onCreate() method. THis allows the MyLocationListener
+class to be self-sufficient , meaning that the logic to react to
+changes in lifecycle status is declared in MyLocationListener instead
+of activity. having the individual compo. store thier own logic
+makes activities and frag. logic easier to manage.
+ */
 internal class MyLocationListener(
         private val context: Context ,
         private val callback: (Location) -> Unit
