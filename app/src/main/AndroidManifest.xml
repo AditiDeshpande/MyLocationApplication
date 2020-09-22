@@ -9,6 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MyLocationApplication">
+        <activity android:name=".MyActivity"></activity>
         <activity android:name=".MyLocationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
