@@ -4,6 +4,8 @@ import android.content.Context
 import android.location.Location
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.OnLifecycleEvent
 
 /*
 We have an activity that shows the device location on the screen.
@@ -68,16 +70,46 @@ changes in lifecycle status is declared in MyLocationListener instead
 of activity. having the individual compo. store thier own logic
 makes activities and frag. logic easier to manage.
  */
+/*
+A common use case is to avoid invoking certain callbacks if the
+Lifecycle isn't in a good state right now. e.g if the callback
+runs a fragment transaction after the activity state is saved , it
+would trigger a crash , so we would never want to invoke that callback
+to make this use case easy, the LifeCycle class allows other objects
+to query the current state.
+ */
+/*
+with this implemenatation our MyLocationListener class is completely
+lifecycle-aware. If we need to use our MyLocationListener from another
+activity/fragment we just need to initialize it. All of the setup
+and teardown operations r managed by the class itself
+ */
 internal class MyLocationListener(
         private val context: Context ,
+        private val lifecycle: Lifecycle
         private val callback: (Location) -> Unit
 ){
+    private val enabled = false
+
+    @OnLifecycleEvent(Lifecycle.Event.ON_START)
     fun start(){
         //Connect to system location service
+        if(enabled){
+            //connect
+        }
     }
 
+    fun enable(){
+        enabled = true
+        if(lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED)){
+            //connect if not connected
+        }
+    }
+
+    @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
     fun stop(){
         //disconnect from sys location service
+        //disconnectc if connected
     }
 }
 
