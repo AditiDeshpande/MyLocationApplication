@@ -30,6 +30,18 @@ class MyLocationActivity : AppCompatActivity() {
         Manage other components that need to respond
         to the activity lifecycle
          */
+        /*
+        Foll is the change made to solve the prob
+         */
+        Util.checkUserStatus{
+            result ->
+            //What if this callback is invoked AFTER activity
+            //is stopped?
+            if(result){
+                myLocationListener.start()
+            }
+        }
+
     }
 
     public override fun onStop() {
